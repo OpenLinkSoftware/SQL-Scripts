@@ -29,10 +29,6 @@ ATTACH TABLE "Northwind"."dbo"."Categories" AS SQLSERVER.Northwind.Categories FR
 ATTACH TABLE "Northwind"."dbo"."Customers" AS SQLSERVER.Northwind.Customers FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."EmployeeTerritories" AS SQLSERVER.Northwind.EmployeeTerritories FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."Employees" AS SQLSERVER.Northwind.Employees FROM 'sql25ma' ;
-
---only this one has an error
-
-
 ATTACH TABLE "Northwind"."dbo"."Order Details" AS SQLSERVER.Northwind.Order Details FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."Orders" AS SQLSERVER.Northwind.Orders FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."Products" AS SQLSERVER.Northwind.Products FROM 'sql25ma' ;
