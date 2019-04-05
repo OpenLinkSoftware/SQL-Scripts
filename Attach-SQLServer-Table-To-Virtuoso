@@ -1,0 +1,57 @@
+-- Microsoft SQL Server 
+-- ODBC Data Source Name (DSN): sql25ma
+-- OpenLink ODBC Driver Connection Attributes (X.500 Name): DSN=sql25ma;HOST={request-broker-dns-name};SVT=SQLServer;DATABASE=HR
+
+-- Cleanup 
+
+
+DROP TABLE "SQLSERVER"."Northwind"."Categories" ;
+DROP TABLE "SQLSERVER"."Northwind"."Customers" ;
+DROP TABLE "SQLSERVER"."Northwind"."EmployeeTerritories" ;
+DROP TABLE "SQLSERVER"."Northwind"."Employees" ;
+DROP TABLE "SQLSERVER"."Order Details"."Order Details" ;
+DROP TABLE "SQLSERVER"."Northwind"."Orders" ;
+DROP TABLE "SQLSERVER"."Northwind"."Products" ;
+DROP TABLE "SQLSERVER"."Northwind"."Region" ;
+DROP TABLE "SQLSERVER"."Northwind"."Shippers" ;
+DROP TABLE "SQLSERVER"."Northwind"."Suppliers" ;
+DROP TABLE "SQLSERVER"."Northwind"."Territories" ;
+
+-- Prepare Remote Data Source (ODBC DSNs) for use by Virtuoso
+-- Note: http://docs.openlinksw.com/virtuoso/fn_vd_remote_data_source/
+
+
+DB..VD_REMOTE_DATA_SOURCE ('sql25ma', '', '', '') ;
+
+--Attach Tables from SQL Server RDBMS (Not Fully Working))
+
+ATTACH TABLE "Northwind"."dbo"."Categories" AS SQLSERVER.Northwind.Categories FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Customers" AS SQLSERVER.Northwind.Customers FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."EmployeeTerritories" AS SQLSERVER.Northwind.EmployeeTerritories FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Employees" AS SQLSERVER.Northwind.Employees FROM 'sql25ma' ;
+
+--only this one has an error
+
+
+ATTACH TABLE "Northwind"."dbo"."Order Details" AS SQLSERVER.Northwind.Order Details FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Orders" AS SQLSERVER.Northwind.Orders FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Products" AS SQLSERVER.Northwind.Products FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Region" AS SQLSERVER.Northwind.Region FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Shippers" AS SQLSERVER.Northwind.Shippers FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Suppliers" AS SQLSERVER.Northwind.Suppliers FROM 'sql25ma' ;
+ATTACH TABLE "Northwind"."dbo"."Territories" AS SQLSERVER.Northwind.Territories FROM 'sql25ma' ;
+
+COMMIT WORK ;
+
+-- Test Queries
+
+SELECT * FROM "SQLSERVER"."Northwind"."Categories" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Customers" ;
+SELECT * FROM "SQLSERVER"."Northwind"."EmployeeTerritories" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Employees" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Orders" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Products" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Region" ;
+SELECT * FROM "SQLSERVER"."Northwind"."shippers" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Suppliers" ;
+SELECT * FROM "SQLSERVER"."Northwind"."Territories" ;
