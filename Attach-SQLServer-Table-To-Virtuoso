@@ -23,8 +23,6 @@ DROP TABLE "SQLSERVER"."Northwind"."Territories" ;
 
 DB..VD_REMOTE_DATA_SOURCE ('sql25ma', '', '', '') ;
 
---Attach Tables from SQL Server RDBMS (Not Fully Working))
-
 ATTACH TABLE "Northwind"."dbo"."Categories" AS SQLSERVER.Northwind.Categories FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."Customers" AS SQLSERVER.Northwind.Customers FROM 'sql25ma' ;
 ATTACH TABLE "Northwind"."dbo"."EmployeeTerritories" AS SQLSERVER.Northwind.EmployeeTerritories FROM 'sql25ma' ;
