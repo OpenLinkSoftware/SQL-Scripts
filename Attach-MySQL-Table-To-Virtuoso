@@ -1,0 +1,65 @@
+-- MySQL/MariaDB RDBMS
+-- ODBC Data Source Name (DSN): mysql5ma
+-- OpenLink ODBC Driver Connection Attributes (X.500 Name): DSN=mysql5ma;HOST={request-broker-dns-name};SVT=MySQL
+
+-- Drop Currently Attached (Remote or External) Tables
+
+DROP TABLE mysql.artist
+DROP TABLE mysql.bulkoperation_test_table
+DROP TABLE mysql.countries ;
+DROP TABLE mysql.customers ;
+DROP TABLE mysql.cust_key ;
+DROP TABLE mysql.department ;
+DROP TABLE mysql.employees ;
+DROP TABLE mysql.flags ;
+DROP TABLE mysql.order_details ;
+DROP TABLE mysql.parts ;
+DROP TABLE mysql.products ;
+DROP TABLE mysql.provinces ;
+DROP TABLE mysql.shippers ;
+DROP TABLE mysql.specialcolumns_test_table
+DROP TABLE mysql.suppliers
+DROP TABLE mysql.workofart
+DROP TABLE mysql.workofarttype
+
+
+-- Prepare Remote Data Source (ODBC DSNs) for use by Virtuoso
+-- Note: http://docs.openlinksw.com/virtuoso/fn_vd_remote_data_source/
+
+DB..VD_REMOTE_DATA_SOURCE ('mysql5ma','','','') ;
+
+--Attach Tables 
+
+ATTACH TABLE artist AS mysql.artist FROM 'mysql5ma'  ;
+ATTACH TABLE countries AS mysql.countries FROM 'mysql5ma'  ;
+ATTACH TABLE customers AS mysql.customers FROM 'mysql5ma'  ;
+ATTACH TABLE customers_key AS mysql.customers_key FROM 'mysql5ma'  ;
+ATTACH TABLE department AS mysql.department FROM 'mysql5ma'  ;
+ATTACH TABLE employees  AS mysql.employees FROM 'mysql5ma' ;
+ATTACH TABLE flags AS mysql.flags FROM 'mysql5ma' ;
+ATTACH TABLE order_details AS mysql.order_details FROM 'mysql5ma'  ;
+ATTACH TABLE parts AS mysql.parts FROM 'mysql5ma' ;
+ATTACH TABLE products AS mysql.products FROM 'mysql5ma'  ;
+ATTACH TABLE provinces AS mysql.provinces FROM 'mysql5ma'  ;
+ATTACH TABLE shippers AS mysql.shippers FROM 'mysql5ma'  ;
+ATTACH TABLE suppliers AS mysql.suppliers FROM 'mysql5ma'  ;
+ATTACH TABLE workofart AS mysql.workofart FROM 'mysql5ma'  ;
+ATTACH TABLE workofarttype AS mysql.workofarttype FROM 'mysql5ma'  ;
+
+COMMIT WORK ;
+
+SELECT TOP 5 * FROM mysql.artist  ;
+SELECT TOP 5 * FROM mysql.countries  ;
+SELECT TOP 5 * FROM mysql.customers  ;
+SELECT TOP 5 * FROM mysql.customers_key  ;
+SELECT TOP 5 * FROM mysql.department  ;
+SELECT TOP 5 * FROM mysql.employees  ;
+SELECT TOP 5 * FROM mysql.flags  ;
+SELECT TOP 5 * FROM mysql.order.details  ;
+SELECT TOP 5 * FROM mysql.parts  ;
+SELECT TOP 5 * FROM mysql.products  ;
+SELECT TOP 5 * FROM mysql.provinces  ;
+SELECT TOP 5 * FROM mysql.shippers  ;
+SELECT TOP 5 * FROM mysql.suppliers  ;
+SELECT TOP 5 * FROM mysql.workofart  ;
+SELECT TOP 5 * FROM mysql.workofarttype  ;
