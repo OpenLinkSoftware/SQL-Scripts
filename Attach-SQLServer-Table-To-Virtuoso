@@ -1,6 +1,6 @@
 -- Microsoft SQL Server 
 -- ODBC Data Source Name (DSN): sql25ma
--- OpenLink ODBC Driver Connection Attributes (X.500 Name): DSN=sql25ma;HOST={request-broker-dns-name};SVT=SQLServer;DATABASE=HR
+-- OpenLink ODBC Driver Connection Attributes (X.500 Name): DSN=sql25ma;HOST={request-broker-dns-name};SVT=SQLServer;DATABASE=Northwind
 
 -- Cleanup 
 
