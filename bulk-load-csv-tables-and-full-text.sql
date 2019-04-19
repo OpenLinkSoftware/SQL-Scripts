@@ -1,9 +1,9 @@
 -- Cleanup
 
-DROP TABLE csv.demo.companies ;
-DROP TABLE csv.demo.investments ;
-DROP TABLE csv.demo.investors ;
-DROP TABLE csv.demo.articles ;
+DROP TABLE "csv"."demo"."companies" ;
+DROP TABLE "csv"."demo"."investments" ;
+DROP TABLE "csv"."demo"."investors" ;
+DROP TABLE "csv"."demo"."articles" ;
 
 DELETE FROM DB.DBA.csv_load_list ;
 
@@ -21,13 +21,31 @@ SELECT * FROM  DB.DBA.csv_load_list ;
 -- Load Data 
 
 CSV_LOADER_RUN () ;
+	
+-- Add Primary Keys to Tables generated from CSV
+ALTER TABLE "csv"."demo"."companies" MODIFY PRIMARY KEY ("id") ;
+ALTER TABLE "csv"."demo"."investments" MODIFY PRIMARY KEY ("id") ;
+-- ALTER TABLE "csv"."demo"."investors" MODIFY PRIMARY KEY ("id") ;
+-- ALTER TABLE "csv"."demo"."articles" MODIFY PRIMARY KEY ("id") ;
+	
+-- Create "vdb" USER
+
+USER_CREATE('vdb','vdb') ;
+	
+-- Grant access to user "vdb" for live demo purposes
+
+GRANT SELECT ON "csv"."demo"."companies" TO "vdb" ;
+GRANT SELECT ON "csv"."demo"."investments" TO "vdb" ;
+GRANT SELECT ON "csv"."demo"."investors" TO "vdb" ;
+GRANT SELECT ON "csv"."demo"."articles" TO "vdb" ;
+
 
 -- Confirm Data Load
 
-SELECT TOP 10 * FROM csv.demo.companies ;
-SELECT TOP 10 * FROM csv.demo.investments ;
-SELECT TOP 10 * FROM csv.demo.investors ;
-SELECT TOP 10 * FROM csv.demo.articles ;
+SELECT TOP 10 * FROM "csv"."demo"."companies" ;
+SELECT TOP 10 * FROM "csv"."demo"."investments" ;
+SELECT TOP 10 * FROM "csv"."demo"."investors" ;
+SELECT TOP 10 * FROM "csv"."demo"."articles" ;
 
 -- Full Text Indexing on "csv"."demo"."investors"
 
