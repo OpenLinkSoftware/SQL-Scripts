@@ -1,4 +1,5 @@
--- Works on the assumption of Northwind CSV files in ~virtuoso/vad directory (folder)  .
+-- Works on the assumption of Northwind CSV files in  ~virtuoso/vad directory, downloaded and extracted from: 
+-- http://bitnine.net/tutorial/import-northwind-dataset.zip
 
 
 DROP TABLE  "csv"."northwind_from_attached_csv"."customers" ;
