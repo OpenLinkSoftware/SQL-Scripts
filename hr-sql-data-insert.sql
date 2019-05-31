@@ -1,3 +1,5 @@
+/* Source Atribution: http://www.sqltutorial.org/sql-sample-database/ */
+
 /*Data for the table regions*/
 INSERT INTO regions(region_id,region_name) VALUES (1,'Europe');
 INSERT INTO regions(region_id,region_name) VALUES (2,'Americas');
