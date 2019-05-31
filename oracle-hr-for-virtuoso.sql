@@ -1,3 +1,4 @@
+-- Adapted from version at: http://www.sqltutorial.org/sql-sample-database/
 -- Clean up
 
  
