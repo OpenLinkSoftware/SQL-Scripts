@@ -1,3 +1,7 @@
+-- Northwind Trading Database Schema
+
+USE Demo;
+
 -- Cleanup
 
 DROP TABLE Order_Details;
@@ -11,9 +15,8 @@ DROP TABLE Categories;
 
 -- Create Schema
 
-USE Demo;
 
-CREATE TABLE demo.Categories(
+CREATE TABLE demo.Categories (
   CategoryID INTEGER,
   CategoryName VARCHAR(15),
   Description LONG VARCHAR,
@@ -22,13 +25,13 @@ CREATE TABLE demo.Categories(
 
 CREATE INDEX CategoryName ON demo.Categories (CategoryName);
 
-CREATE TABLE demo.Shippers(
+CREATE TABLE demo.Shippers (
   ShipperID INTEGER,
   CompanyName VARCHAR(40),
   Phone VARCHAR(24),
   PRIMARY KEY (ShipperID));
 
-CREATE TABLE demo.Suppliers(
+CREATE TABLE demo.Suppliers (
   SupplierID INTEGER,
   CompanyName VARCHAR(40),
   ContactName VARCHAR(30),
@@ -47,7 +50,7 @@ CREATE TABLE demo.Suppliers(
 CREATE INDEX CompanyName1 ON demo.Suppliers (CompanyName);
 CREATE INDEX PostalCode1 ON demo.Suppliers (PostalCode);
 
-CREATE TABLE demo.Products(
+CREATE TABLE demo.Products (
   ProductID INTEGER,
   ProductName VARCHAR(40),
   SupplierID INTEGER,
@@ -66,7 +69,7 @@ CREATE INDEX CategoryID ON demo.Products (CategoryID);
 CREATE INDEX ProductName ON demo.Products (ProductName);
 CREATE INDEX SupplierID ON demo.Products (SupplierID);
 
-CREATE TABLE demo.Customers(
+CREATE TABLE demo.Customers (
   CustomerID VARCHAR(5),
   CompanyName VARCHAR(40),
   ContactName VARCHAR(30),
@@ -86,7 +89,7 @@ CREATE INDEX CompanyName2 ON demo.Customers (CompanyName);
 CREATE INDEX PostalCode2 ON demo.Customers (PostalCode);
 CREATE INDEX Region ON demo.Customers (Region);
 
-CREATE TABLE demo.Employees(
+CREATE TABLE demo.Employees (
   EmployeeID INTEGER,
   LastName VARCHAR(20),
   FirstName VARCHAR(10),
@@ -110,7 +113,7 @@ CREATE TABLE demo.Employees(
 CREATE INDEX LastName ON demo.Employees (LastName);
 CREATE INDEX PostalCode3 ON demo.Employees (PostalCode);
 
-CREATE TABLE demo.Orders(
+CREATE TABLE demo.Orders (
   OrderID INTEGER,
   CustomerID VARCHAR(5),
   EmployeeID INTEGER,
@@ -136,7 +139,7 @@ CREATE INDEX EmployeeID ON demo.Orders (EmployeeID);
 CREATE INDEX OrderDate ON demo.Orders (OrderDate);
 CREATE INDEX ShippedDate ON demo.Orders (ShippedDate);
 
-CREATE TABLE demo.Order_Details(
+CREATE TABLE demo.Order_Details (
   OrderID INTEGER,
   ProductID INTEGER,
   UnitPrice DOUBLE PRECISION,
