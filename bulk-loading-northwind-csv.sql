@@ -24,6 +24,7 @@ DROP TABLE  "csv_bl"."Northwind"."suppliers" ;
 DROP TABLE  "csv_bl"."Northwind"."employee_territories" ;
 DROP TABLE  "csv_bl"."Northwind"."territories";
 DROP TABLE  "csv_bl"."Northwind"."employees" ;
+DROP TABLE  "csv_bl"."Northwind"."manager" ;
 DROP TABLE  "csv_bl"."Northwind"."regions" ;
 DROP TABLE  "csv_bl"."Northwind"."shippers" ;
 
@@ -52,7 +53,7 @@ CSV_REGISTER('../vad', 'territories.csv') ;
 
 -- Check that DB.DBA.csv_load_list table contains CSV documents to loaded
 
-SELECT * FROM "DB"."DBA"."csv_load_list" ;
+SELECT TOP 5 * FROM "DB"."DBA"."csv_load_list" ;
 
 
 -- Run CSV Bulk Loader
@@ -64,21 +65,30 @@ CSV_LOADER_RUN () ;
 
 SELECT * FROM "DB"."DBA"."csv_load_list" ;
 
+-- Make Manager Table from Query against Employees Table
 
+CREATE TABLE "csv_bl"."Northwind"."manager"
+	AS SELECT DISTINCT *
+	FROM "csv_bl"."Northwind"."employees"  WHERE "reportsTo" IS NOT NULL WITH DATA ;
+		
 -- Confirm Tables have been successfully created by CSV Bulk Loader
 
-SELECT * FROM "csv_bl"."Northwind"."categories" ;
-SELECT * FROM "csv_bl"."Northwind"."customers" ;
-SELECT * FROM "csv_bl"."Northwind"."employees" ;
-SELECT * FROM "csv_bl"."Northwind"."employee_territories" ;
-SELECT * FROM "csv_bl"."Northwind"."order_details" ;
-SELECT * FROM "csv_bl"."Northwind"."orders" ;
-SELECT * FROM "csv_bl"."Northwind"."products" ;
-SELECT * FROM "csv_bl"."Northwind"."regions" ;
-SELECT * FROM "csv_bl"."Northwind"."shippers" ;
-SELECT * FROM "csv_bl"."Northwind"."suppliers" ;
-SELECT * FROM "csv_bl"."Northwind"."territories" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."categories" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."customers" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."manager" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."employees" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."employee_territories" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."order_details" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."orders" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."products" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."regions" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."shippers" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."suppliers" ;
+SELECT TOP 5 * FROM "csv_bl"."Northwind"."territories" ;
 
+
+	
+	
 -- ADD Foreign Keys to each table. 
 -- Works on the assumption of Northwind CSV files in ~virtuoso/vad directory (folder)  .
 
@@ -98,16 +108,28 @@ SELECT TOP 5 * FROM "csv_bl"."Northwind"."customers"  ;
 
 
 
+-- MANAGERS Table 
+		
+ALTER TABLE "csv_bl"."Northwind"."manager"
+      MODIFY PRIMARY KEY ("employeeID", "reportsTo") ;
+	  
+
 -- ALTER EMPLOYEES TABLE
 
 	   
 ALTER TABLE "csv_bl"."Northwind"."employees" 
       MODIFY PRIMARY KEY ("employeeID") ;
 	  
-ALTER TABLE "csv_bl"."Northwind"."employees"   
-   ADD FOREIGN KEY ("employeeID") REFERENCES "csv_bl"."Northwind"."employees" ("employeeID") ;
-		   
+-- ALTER TABLE "csv_bl"."Northwind"."employees"   
+-- ADD FOREIGN KEY ("employeeID") REFERENCES "csv_bl"."Northwind"."employees" ("employeeID") ;
+
+ALTER TABLE  "csv_bl"."Northwind"."employees"   
+  	-- ADD FOREIGN KEY ("employeeID","reportsTo") REFERENCES "csv_bl"."Northwind"."manager" ("employeeID","reportsTo");
+	ADD FOREIGN KEY ("employeeID","reportsTo") REFERENCES "csv_bl"."Northwind"."manager" ("employeeID","reportsTo");
+				   
 SELECT TOP 5 * FROM "csv_bl"."Northwind"."employees"  ;
+
+
 
 
 -- ALTER EMPLOYEE TERRITORIES TABLE
@@ -116,7 +138,8 @@ ALTER TABLE "csv_bl"."Northwind"."employee_territories"
       MODIFY PRIMARY KEY ("employeeID","territoryID");
 	  
 ALTER TABLE "csv_bl"."Northwind"."employee_territories"   
-	 ADD FOREIGN KEY ("employeeID") REFERENCES  "csv_bl"."Northwind"."employees"  ("employeeID") ;
+	 ADD FOREIGN KEY ("employeeID") REFERENCES  "csv_bl"."Northwind"."employees"  ("employeeID") ;	 
+
 			  
 SELECT TOP 5 * FROM "csv_bl"."Northwind"."employee_territories"  ;
 
@@ -199,3 +222,237 @@ ALTER TABLE "csv_bl"."Northwind"."regions"
 SELECT TOP 5 * FROM "csv_bl"."Northwind"."territories" ;
 
 
+-- Test Queries
+-- Works
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT *
+FROM <http://demo.openlinksw.com/csv_bl#> 
+WHERE { 
+		?s northwind:has_manager ?o .
+	  }
+ ;
+
+
+-- Fails when storage is Virtual only
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT *
+# FROM <http://demo.openlinksw.com/csv_bl#> 
+WHERE { 
+		?s northwind:has_manager ?o .
+	  }
+
+;
+
+-- Works due to existence of Physical Graphs 
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT *
+# FROM <http://demo.openlinksw.com/csv_bl#> 
+# FROM <urn:demo.openlinksw.com:csv_bl>
+WHERE { 
+		?s northwind:has_manager ?o .
+	  }
+;
+
+-- Sanity Checks
+
+-- SQL
+
+select DISTINCT B.employeeid, A.reportsTo
+from "csv_bl"."Northwind"."employees" A
+inner join "csv_bl"."Northwind"."employees" B on A.reportsTo = B.reportsTo
+order by 2 desc
+
+-- SPARQL
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT *
+# FROM <http://demo.openlinksw.com/csv_bl#> 
+# FROM <urn:demo.openlinksw.com:csv_bl>
+WHERE {
+       ?s northwind:firstname ?name ;
+          northwind:lastname ?lastName ;
+          northwind:manager_of ?o. 
+       ?o northwind:firstname ?mgrName ;
+          northwind:lastname ?mgrlastName .
+     }
+	 ;
+	 
+-- Total Orders by Employee
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT ?employee ?name sum((?quantity * ?unitprice * (1 - ?discount))) as ?orderTotalByEmp 
+# FROM <urn:demo.openlinksw.com:Demo>
+WHERE  
+{
+?employee a northwind:employees ;
+           northwind:firstname ?firstname ;
+           northwind:lastname ?lastname ;
+BIND (concat(?firstname,' ', ?lastname) as ?name) .
+
+?order northwind:has_employees ?employee .
+?order northwind:orders_of ?order_details. 
+?order_details northwind:quantity ?quantity ;
+              northwind:unitprice ?unitprice ;
+              northwind:discount ?discount .
+}
+GROUP BY ?employee ?name
+ORDER BY desc(?orderTotalByEmp) 
+
+;
+
+-- Total Sales by Employee Product
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT ?employee ?name ?productName sum((?quantity * ?unitprice * (1 - ?discount))) as ?orderTotalByEmp 
+# FROM <urn:demo.openlinksw.com:Demo>
+WHERE  
+{
+  ?employee a northwind:employees ;
+              northwind:firstname ?firstname ;
+              northwind:lastname ?lastname .
+  BIND (concat(?firstname,' ', ?lastname) as ?name) .
+
+  ?order northwind:has_employees ?employee .
+  ?order northwind:orders_of ?order_details. 
+  ?order_details northwind:quantity ?quantity ;
+                 northwind:unitprice ?unitprice ;
+                 northwind:discount ?discount ;
+                 northwind:has_products ?product .
+ ?product northwind:productname ?productName . 
+
+}
+;
+
+
+-- Employees associated with Product Orders that have "Chai" in product name
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT *
+WHERE  
+{
+   ?employee northwind:employees_of / northwind:orders_of / northwind:has_products ?o .
+   ?o northwind:productname ?name .
+   ?name bif:contains "Chai" . 
+} 
+;
+
+-- Employees (using Property Paths) associated with Cross Product Orders that have "Chai" in product name
+
+SPARQL
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT ?employee ?name count(?o2) AS ?count
+WHERE  
+{
+   { 
+   		?employee northwind:employees_of / northwind:orders_of / northwind:has_products ?o .
+   	 	?o northwind:productname ?name .
+   	 	?name bif:contains "Chai" . 
+  }
+  
+  { 
+  		?employee2 northwind:employees_of / northwind:orders_of / northwind:has_products ?o2 .
+  	 	?o2 northwind:productname ?name2 .
+                
+ }
+  FILTER (?employee = ?employee2)
+} 
+;
+
+
+-- SPARQL (using BI) Employees associated with Cross Product Orders that have "Chai" in product name
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT ?employee ?o+>northwind:productname AS ?productName  count(?o2+>northwind:productname) AS ?totalProductSalesCount
+WHERE  
+{
+   { 
+   		?employee+>northwind:employees_of+>northwind:orders_of northwind:has_products ?o .
+   	 	?o northwind:productname ?name .
+   	 	?name bif:contains "Chai" . 
+  }
+  
+  { 
+  		?employee2+>northwind:employees_of+>northwind:orders_of northwind:has_products ?o2 .
+  	 	?o2 northwind:productname ?name2 .
+                
+ }
+  FILTER (?employee = ?employee2)
+} 
+
+ORDER BY DESC 3
+;
+
+
+-- Employees Orders Totals using Property Paths
+
+
+SPARQL
+
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT ?employee2 ?orderid ?unitprice ?quantity ?discount ((?unitprice * ?quantity) - ?discount) as ?total 
+{
+  		?employee2 northwind:employees_of / northwind:orders_of / northwind:has_products ?o2 ;
+                   northwind:employees_of / northwind:orders_of / northwind:unitprice ?unitprice ;
+                   northwind:employees_of / northwind:orders_of / northwind:quantity ?quantity ;
+                   northwind:employees_of / northwind:orders_of / northwind:discount ?discount ;
+                   northwind:employees_of / northwind:orders_of / northwind:orderid ?orderid .
+  	 	?o2 northwind:productname ?name2 .
+
+} 
+;
+
+
+-- Employee and Cross Tab of "Chai" and other Products Ordered
+
+SPARQL
+
+PREFIX northwind: <http://demo.openlinksw.com/schemas/csv_bl/>
+
+SELECT DISTINCT ?employee ?employee2 ?o ?name ?o2 ?name2 
+WHERE  
+{
+   {
+    ?employee northwind:employees_of / northwind:orders_of / northwind:has_products ?o .
+    ?o northwind:productname ?name .
+    ?name bif:contains "Chai" . 
+   }
+
+  {
+    ?employee2 northwind:employees_of / northwind:orders_of / northwind:has_products ?o2 .
+    ?o2 northwind:productname ?name2 .
+    filter not exists { ?o2 northwind:productname ?name2 . ?name2 bif:contains "Chai" } . 
+  }
+
+FILTER ( ?employee = ?employee2)
+} 
+;
