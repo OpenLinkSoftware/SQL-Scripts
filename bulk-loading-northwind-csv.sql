@@ -1,5 +1,8 @@
 -- Create Filesystem Mapping Files to control Virtuoso Table Name preferences via the following files
 -- in ~virtuoso/vad directory, downloaded and extracted from: http://bitnine.net/tutorial/import-northwind-dataset.zip
+-- I did a cd to folder "/Applications/Virtuoso 8.2.app/Contents/virtuoso/vad"
+-- downloaded files using: curl -O http://bitnine.net/tutorial/import-northwind-dataset.zip
+-- extracted using command: unzip import-northwind-dataset.zip
 
 -- "csv_bl"."Northwind"."territories > territories.tb
 -- "csv_bl"."Northwind"."suppliers" > suppliers.tb
