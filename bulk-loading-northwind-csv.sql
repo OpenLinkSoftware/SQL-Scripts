@@ -1,6 +1,7 @@
 -- Create Filesystem Mapping Files to control Virtuoso Table Name preferences via the following files
 -- in ~virtuoso/vad directory, downloaded and extracted from: http://bitnine.net/tutorial/import-northwind-dataset.zip
 
+-- Setup Mappings for Filesystem Documents to Database Table by placing the desired Table Name in a ".tb" file in ~virtuoso/vad directory
 -- "csv_bl"."Northwind"."territories > territories.tb
 -- "csv_bl"."Northwind"."suppliers" > suppliers.tb
 -- "csv_bl"."Northwind"."shippers" > shippers.tb
