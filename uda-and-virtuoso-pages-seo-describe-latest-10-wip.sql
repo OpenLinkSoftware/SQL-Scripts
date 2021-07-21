@@ -405,8 +405,8 @@ PREFIX oplofr:  <http://www.openlinksw.com/ontology/offers#>
 PREFIX oplfeat: <http://www.openlinksw.com/ontology/features#>
 PREFIX uda-page: <http://uda.openlinksw.com/>
 PREFIX openlink-page: <http://www.openlinksw.com/> 
-PREFIX virtuoso: <http://www.virtuoso.com/#> 
-PREFIX virtuoso-ssl: <https://www.virtuoso.com/#> 
+PREFIX virtuoso: <http://virtuoso.openlinksw.com/#> 
+PREFIX virtuoso-ssl: <https://virtuoso.openlinksw.com/#> 
 PREFIX openlink-ssl: <https://www.openlinksw.com/#> 
 PREFIX uda-page-ssl: <https://uda.openlinksw.com/>
 PREFIX openlink-page-ssl: <https://www.openlinksw.com/> 
@@ -552,8 +552,8 @@ PREFIX faq-page: <http://www.openlinksw.com/data/turtle/general/virtuoso-offer-f
 PREFIX openlink-page: <http://www.openlinksw.com/> 
 PREFIX uda-page: <http://uda.openlinksw.com/> 
 PREFIX virtuoso-faq: <http://virtuoso.openlinksw.com/faq/#> 
-PREFIX virtuoso-page: <http://www.virtuoso.com/#> 
-PREFIX virtuoso-ssl: <https://www.virtuoso.com/#> 
+PREFIX virtuoso-page: <http://virtuoso.openlinksw.com/#> 
+PREFIX virtuoso-ssl: <https://virtuoso.openlinksw.com/#> 
 PREFIX openlink-ssl: <https://www.openlinksw.com/#> 
 PREFIX uda-page-ssl: <https://uda.openlinksw.com/>
 PREFIX openlink-page-ssl: <https://www.openlinksw.com/> 
