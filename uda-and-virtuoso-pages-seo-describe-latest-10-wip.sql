@@ -418,9 +418,9 @@ PREFIX uda-ssl: <https://uda.openlinksw.com/#>
 INSERT {
             GRAPH <urn:mdata:websites:google:seo> 
 			{
-                                ?Page_ssl 	a schema:WebPage ;
-                                            schema:title "About Virtuoso"@en ;
-                                            schema:name "About Virtuoso"@en ;
+                                ?Page_ssl   a schema:WebPage ;
+                                            schema:title "Virtuoso Home Page"@en ;
+                                            schema:name "Virtuoso Home Page"@en ;
                                             schema:description """High-Performance, Secure, and Scalable Platform that combines Data Acccess,
                                                                   Data Integration, and Multi-Model (SQL & SPARQL) Data Management Services in 
                                                                   a single Cross Platform Solution."""@en ;
@@ -429,7 +429,8 @@ INSERT {
                                             schema:offers ?OfferID ;
                                             schema:relatedLink openlink-page-ssl: , uda-page-ssl: ;
                                             schema:dateModified ?dateModified ;
-                                            schema:about ?SoftwareAppID . 
+                                            schema:mainEntity virtuoso-ssl:this ;
+                                            schema:about ?SoftwareAppID .  
                                 ?SoftwareAppID  a schema:SoftwareApplication ;
                                                 schema:name ?SoftwareAppName ;
                                                 # schema:url ?SoftwareApp ;
@@ -539,7 +540,7 @@ WHERE {
         BIND (now() as ?dateModified)
 } ;
 
--- Virtuoso FAQ Page SSEO
+-- Virtuoso Pricing FAQ Page SSEO
 
 SPARQL
 
@@ -559,6 +560,7 @@ PREFIX uda-page-ssl: <https://uda.openlinksw.com/>
 PREFIX openlink-page-ssl: <https://www.openlinksw.com/> 
 PREFIX virtuoso-page-ssl: <https://virtuoso.openlinksw.com/>
 PREFIX uda-ssl: <https://uda.openlinksw.com/#> 
+PREFIX virtuoso-ssl: <https://virtuoso.openlinksw.com/#>
 
 # SELECT DISTINCT ?Offer ?question ?questionLabel ?answer ?answerLabel
 
@@ -567,16 +569,19 @@ INSERT {
                 {
                     ?Page a schema:WebPage, schema:FAQPage ;
                             schema:name "Virtuoso Frequently Asked Questions & Answers Page" ;
-                            schema:about ?question, ?answer, ?LicenseID, ?OfferID ;
-                            schema:relatedLink virtuoso-page:, openlink-page: , uda-page: .
+                            schema:title "Virtuoso Frequently Asked Questions & Answers Page" ;
+                            schema:mainEntity virtuoso-ssl:this ;
+                            schema:about ?questionID, ?answerID, ?LicenseID, ?OfferID ;
+                            schema:relatedLink virtuoso-page-ssl:, openlink-page-ssl: , uda-page-ssl: ;
+                            schema:dateModified ?dateModified .
 
                     ?questionID a schema:Question ;
-                                schema:headline ?questionLabel ;
+                                schema:title ?questionLabel ;
                                 schema:about ?LicenseID ;
-                                schema:suggestedAnswer ?answer . 
+                                schema:suggestedAnswer ?answerID . 
                     
                     ?answerID a schema:Answer ;
-                                schema:headline ?answerLabel ;
+                                schema:title ?answerLabel ;
                                 schema:about ?LicenseID .
 
                     ?LicenseID a schema:Product ;
@@ -639,20 +644,88 @@ WHERE {
 
                             faq-page:ttl schema:about ?question . 
 
-                            BIND (now() as ?dateModified)
                             BIND (IRI(CONCAT(STR(virtuoso-page-ssl:),MD5(?questionLabel))) AS ?questionID)
                             BIND (IRI(CONCAT(STR(virtuoso-page-ssl:),MD5(?answerLabel))) AS ?answerID)
                         }
 
             GRAPH ?g2 {
-                            SELECT ?SoftwareApp ?SoftwareAppRelease ( <https://virtuoso.openlinksw.com/faq/> as ?Page )
+                            SELECT ?SoftwareApp ?SoftwareAppRelease ( <https://virtuoso.openlinksw.com/pricing/> as ?Page )
                             WHERE { 
                                     GRAPH ?g {
                                                 ?SoftwareApp oplpro:hasRelease ?SoftwareAppRelease 
                                             }
                                 }
                         }
+
+            BIND (now() as ?dateModified)
         } ;
+
+-- Virtuoso FAQ Page SSEO
+
+SPARQL
+
+PREFIX schema:  <http://schema.org/>
+PREFIX opllic:  <http://www.openlinksw.com/ontology/licenses#>
+PREFIX oplsof:  <http://www.openlinksw.com/ontology/software#>
+PREFIX oplpro:  <http://www.openlinksw.com/ontology/products#>
+PREFIX oplofr:  <http://www.openlinksw.com/ontology/offers#>
+PREFIX faq-page: <http://www.openlinksw.com/data/turtle/general/virtuoso-offer-faq.>
+PREFIX openlink-page: <http://www.openlinksw.com/> 
+PREFIX uda-page: <http://uda.openlinksw.com/> 
+PREFIX virtuoso-faq: <http://virtuoso.openlinksw.com/faq/#> 
+PREFIX virtuoso-page: <http://virtuoso.openlinksw.com/#> 
+PREFIX virtuoso-ssl: <https://virtuoso.openlinksw.com/#> 
+PREFIX openlink-ssl: <https://www.openlinksw.com/#> 
+PREFIX uda-page-ssl: <https://uda.openlinksw.com/>
+PREFIX openlink-page-ssl: <https://www.openlinksw.com/> 
+PREFIX virtuoso-page-ssl: <https://virtuoso.openlinksw.com/>
+PREFIX uda-ssl: <https://uda.openlinksw.com/#> 
+PREFIX virtuoso-faq-page-ssl: <https://virtuoso.openlinksw.com/faq/> 
+PREFIX virtuoso-ssl: <https://virtuoso.openlinksw.com/#>
+
+# SELECT DISTINCT ?Offer ?question ?questionLabel ?answer ?answerLabel
+
+INSERT {
+            GRAPH <urn:mdata:websites:google:seo> 
+                {
+                    ?Page a schema:WebPage, schema:FAQPage ;
+                            schema:name "Virtuoso Frequently Asked Questions & Answers Page" ;
+                            schema:title "Virtuoso Frequently Asked Questions & Answers Page" ;
+                            schema:description """Collection of Questions and Answers addressing all aspects of the Virtuoso Multi-Model DBMS & Data Integration Platform""" ;
+                            schema:mainEntity virtuoso-ssl:this ;  
+                            schema:about ?questionID, ?answerID ;
+                            schema:relatedLink virtuoso-page-ssl:, openlink-page-ssl: , uda-page-ssl: ;
+                            schema:dateModified ?dateModified .
+
+                    ?questionID a schema:Question ;
+                                schema:title ?questionLabel ;
+                                schema:about virtuoso-ssl:this ;
+                                schema:suggestedAnswer ?answerID . 
+                    
+                    ?answerID a schema:Answer ;
+                                schema:title ?answerLabel ;
+                                schema:about virtuoso-ssl:this .
+
+                }               
+	   }
+WHERE {
+        GRAPH ?g  {
+                        ?question a schema:Question ;
+                                schema:acceptedAnswer ?answer ;
+                                schema:name ?questionLabel. 
+                        FILTER (LANG(?questionLabel) = "en")
+
+                        ?answer schema:name ?answerLabel . 
+                        FILTER (LANG(?answerLabel) = "en")
+
+                        # faq-page:ttl schema:about ?question . 
+                        BIND (IRI(CONCAT(STR(virtuoso-ssl:),MD5(?questionLabel))) AS ?questionID)
+                        BIND (IRI(CONCAT(STR(virtuoso-ssl:),MD5(?answerLabel))) AS ?answerID)
+                }
+        BIND (now() as ?dateModified)
+        BIND (virtuoso-faq-page-ssl: as ?Page)
+
+      } ;
 
 -- Cleanup 
 
